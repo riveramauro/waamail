@@ -1,6 +1,36 @@
 import Head from 'next/head'
 
+
 export default function Home() {
+
+  const testAPI = (file) => {
+    
+    fetch('/api/hello', {
+      method: 'POST',
+      body: file
+    })
+      .then(res => res.json())
+      .then(data => console.log(data))
+      .catch(res => console.log(res))
+  }
+
+  const handleChange = (event) => {
+    event.preventDefault();
+    console.log(event);
+  }
+
+  const handleFile = (event) => {
+    let html = event.target.files[0];
+    // console.log(html);
+    let filereader = new FileReader();
+    filereader.onload = function(e){
+      let html = JSON.stringify(e.target.result);
+      testAPI(html)
+    }
+    filereader.readAsText(html)
+    // console.log(test);
+  }
+
   return (
     <div className="container">
       <Head>
@@ -12,6 +42,13 @@ export default function Home() {
         <h1 className="title">
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
+
+        <button onClick={testAPI}>Hello</button>
+
+        <form onSubmit={handleChange}>
+          <input type="file" name="file" id="file" onChange={handleFile} />
+          <button type="submit">Submit</button>
+        </form>
 
         <p className="description">
           Get started by editing <code>pages/index.js</code>
