@@ -1,9 +1,10 @@
 import Head from 'next/head'
+import HtmlConverter from "../components/htmlConverter";
 
 
 export default function Home() {
 
-  const testAPI = (file) => {
+  const sendMail = (file) => {
     
     fetch('/api/hello', {
       method: 'POST',
@@ -19,17 +20,6 @@ export default function Home() {
     console.log(event);
   }
 
-  const handleFile = (event) => {
-    let html = event.target.files[0];
-    // console.log(html);
-    let filereader = new FileReader();
-    filereader.onload = function(e){
-      let html = JSON.stringify(e.target.result);
-      testAPI(html)
-    }
-    filereader.readAsText(html)
-    // console.log(test);
-  }
 
   return (
     <div className="container">
@@ -40,49 +30,13 @@ export default function Home() {
 
       <main>
         <h1 className="title">
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
+          Welcome to WAAMail v0.1
         </h1>
-
-        <button onClick={testAPI}>Hello</button>
-
-        <form onSubmit={handleChange}>
-          <input type="file" name="file" id="file" onChange={handleFile} />
-          <button type="submit">Submit</button>
-        </form>
-
+        <HtmlConverter file="testingporps"></HtmlConverter>
         <p className="description">
           Get started by editing <code>pages/index.js</code>
         </p>
 
-        <div className="grid">
-          <a href="https://nextjs.org/docs" className="card">
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className="card">
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/zeit/next.js/tree/master/examples"
-            className="card"
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="card"
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
       </main>
 
       <footer>
@@ -217,6 +171,19 @@ export default function Home() {
 
         .logo {
           height: 1em;
+        }
+
+        .button{
+          width: 100%;
+          background: #8BC34A;
+          border: 0;
+          border-radius: 5px;
+          padding: 10px;
+          cursor: pointer;
+          margin-top:10px;
+        }
+        .button:hover {
+          background: #669036;
         }
 
         @media (max-width: 600px) {
