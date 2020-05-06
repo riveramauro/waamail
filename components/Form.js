@@ -11,21 +11,20 @@ export default function Form() {
 
   function handleForm(e) {
     e.preventDefault();
+    // Save form field to obj
     let formData = new FormData(e.target);
     formData = Object.fromEntries(formData);
-    console.log(formData);
-    // return;
+
     let html = formData.file;
     
-    let filereader = new FileReader();
+    const filereader = new FileReader();
     filereader.readAsText(html);
+    // Runs after the file is read at filereader.readAsText
     filereader.onload = function(e){
       let html = JSON.stringify(e.target.result);
       const path = `http://www.grp360.net/${formData.server}/${formData.jobNum}/images/`
-      console.log(path);
-
       let updatedHtml = html.replace(/images\//gi, path);
-      console.log( JSON.parse(updatedHtml) );
+      setFileName(updatedHtml);
     }
   }
 
