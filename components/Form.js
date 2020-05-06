@@ -1,9 +1,25 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
+import {
+  Box,
+  TextInput,
+  Grommet,
+  FormField,
+  Select,
+  Button
+} from 'grommet';
+import FileDropzone from "../components/FileDropzone";
+
 
 export default function Form() {
 
   const [file, setFile] = useState(null);
   const [fileName, setFileName] = useState(null)
+
+  const serverOptions = [
+    {label: 'Horsham', value: 'horsham'},
+    {label: 'Raritan', value: 'raritan'},
+    {label: 'Titusville', value: 'Titusville'}
+  ]
 
   function handleChange(e){
     setFileName(e.target.files[0].name);
@@ -14,6 +30,8 @@ export default function Form() {
     // Save form field to obj
     let formData = new FormData(e.target);
     formData = Object.fromEntries(formData);
+    console.log(formData);
+    return;
 
     let html = formData.file;
     
@@ -28,29 +46,36 @@ export default function Form() {
     }
   }
 
+  function handleFileDrop(incomingFile) {
+    setFile(incomingFile[0]);
+  }
   return (
     <div>
       <h2>{fileName}</h2>
       <h3>Form</h3>
+      <Grommet>
         <form onSubmit={handleForm}>
+          <FileDropzone getFile={handleFileDrop} />
           <div>
-            <input type="file" name="file" id="file" onChange={handleChange} />
+            <FormField label="Server" name="server">
+              <Select
+                name="server"
+                placeholder="Pick a server"
+                options={serverOptions}
+                labelKey="label"
+                valueKey="value"
+              />
+            </FormField>
           </div>
           <div>
-            <select name="server" id="server">
-            <option value="horsham">Horsham</option>
-            <option value="raritan">Raritan</option>
-            <option value="titusville">Titusville</option>
-            </select>
+            <TextInput placeholder="555555" type="text" name="jobNum" id="jobNum" />
           </div>
-          <div>
-            <input type="text" name="jobNum" id="jobNum" placeholder="8123456" />
-          </div>
-          <button className="button" type="submit">Submit</button>
+          <Button
+            type="submit"
+            label="Submit"
+          />
         </form>
-        <div>
-          <p>{file}</p>
-        </div>
+        </Grommet>
     </div>
   )
 }
