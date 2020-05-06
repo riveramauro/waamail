@@ -46,34 +46,30 @@ export default function Form() {
     setFile(incomingFile[0]);
     setFileName(incomingFile[0].name);
   }
-  return (
-    <div>
-      
-      <Grommet>
-        <h2>Form</h2>
-        <h4>{fileName}</h4>
-        <form onSubmit={handleForm}>
-          <FileDropzone getFile={handleFileDrop} />
-          <div>
-            <FormField label="Server" name="server">
-              <Select
-                name="server"
-                placeholder="Pick a server"
-                options={serverOptions}
-                labelKey="label"
-                valueKey="value"
-              />
-            </FormField>
-          </div>
-          <div>
-            <TextInput placeholder="555555" type="text" name="jobNum" id="jobNum" />
-          </div>
-          <Button
-            type="submit"
-            label="Submit"
-          />
-        </form>
-        </Grommet>
-    </div>
+  return (      
+    <Box>
+      <h4>{fileName}</h4>
+      <form onSubmit={handleForm}>
+        <FileDropzone getFile={handleFileDrop} />
+        <div>
+          <FormField label="Server" name="server">
+            <Select
+              name="server"
+              placeholder="Pick a server"
+              options={serverOptions}
+              labelKey="label"
+              valueKey="value"
+            />
+          </FormField>
+        </div>
+        <div>
+          <TextInput placeholder="555555" type="text" name="jobNum" id="jobNum" />
+        </div>
+        <Button
+          type="submit"
+          label="Submit"
+        />
+      </form>
+      </Box>
   )
 }

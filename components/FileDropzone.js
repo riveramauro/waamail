@@ -39,6 +39,7 @@ export default function FileDropzone(props) {
       align-items: center;
       padding: 20px;
       text-align: center;
+      justify-content: center;
       border: 2px dashed #673AB7;
     `}</style>
     </div>
