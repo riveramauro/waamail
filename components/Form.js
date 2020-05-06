@@ -21,19 +21,15 @@ export default function Form() {
     {label: 'Titusville', value: 'Titusville'}
   ]
 
-  function handleChange(e){
-    setFileName(e.target.files[0].name);
-  }
-
   function handleForm(e) {
     e.preventDefault();
     // Save form field to obj
     let formData = new FormData(e.target);
     formData = Object.fromEntries(formData);
     console.log(formData);
-    return;
+    // return;
 
-    let html = formData.file;
+    let html = file;
     
     const filereader = new FileReader();
     filereader.readAsText(html);
@@ -48,12 +44,14 @@ export default function Form() {
 
   function handleFileDrop(incomingFile) {
     setFile(incomingFile[0]);
+    setFileName(incomingFile[0].name);
   }
   return (
     <div>
-      <h2>{fileName}</h2>
-      <h3>Form</h3>
+      
       <Grommet>
+        <h2>Form</h2>
+        <h4>{fileName}</h4>
         <form onSubmit={handleForm}>
           <FileDropzone getFile={handleFileDrop} />
           <div>
