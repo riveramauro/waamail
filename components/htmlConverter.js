@@ -34,19 +34,7 @@ export default class HtmlConverter extends Component {
   render() {
     return (
       <div>
-        {this.props.file}
-        <form onSubmit={this.handleFile}>
-          <div>
-            <input type="file" name="file" id="file" />
-          </div>
-          <div>
-            <input type="text" name="server" id="server" placeholder="Horsham" />
-          </div>
-          <div>
-            <input type="text" name="jobNum" id="jobNum" placeholder="8123456" />
-          </div>
-          <button className="button" type="submit">Submit</button>
-        </form>
+        
       </div>
     )
   }

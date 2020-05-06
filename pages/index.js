@@ -1,5 +1,5 @@
-import Head from 'next/head'
-import HtmlConverter from "../components/htmlConverter";
+import Head from 'next/head';
+import Form from "../components/Form";
 
 
 export default function Home() {
@@ -32,11 +32,12 @@ export default function Home() {
         <h1 className="title">
           Welcome to WAAMail v0.1
         </h1>
-        <HtmlConverter file="testingporps"></HtmlConverter>
+
+        <Form />
+
         <p className="description">
           Get started by editing <code>pages/index.js</code>
         </p>
-
       </main>
 
       <footer>
