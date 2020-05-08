@@ -1,9 +1,12 @@
 import Head from 'next/head';
 import Form from "../components/Form";
+import CodeContainer from "../components/CodeContainer";
 import { Grommet, Box, Heading } from "grommet";
-
+import { useState } from 'react';
 
 export default function Home() {
+
+  const [code, setCode] = useState(null)
 
   const sendMail = (file) => {
     
@@ -29,6 +32,9 @@ export default function Home() {
     }
   }
 
+ function handleModifiedHtml(html){
+   setCode(html);
+ }
 
   return (
     <Grommet full theme={myTheme}>
@@ -37,13 +43,14 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" />
       </Head>
-      <Box direction='row' flex fill='vertical'>
-        <Box flex pad='small' align='center' justify='center'>
+      <Box direction='row' flex >
+        <Box flex pad='small' align='center' justify='start'>
           <Heading>WAAMail</Heading>
-          <Form />
+          <Form modifiedHtml={handleModifiedHtml} />
         </Box>
         <Box flex pad='large' background='brand' align='center'>
           <p>Code editor here</p>
+          <CodeContainer code={code}></CodeContainer>
         </Box>
       </Box>
     </Grommet>
