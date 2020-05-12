@@ -1,33 +1,34 @@
 import React from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { shadesOfPurple } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
+import {CopyToClipboard} from 'react-copy-to-clipboard';
+import { Button } from 'grommet';
+import { Copy, Code } from 'grommet-icons';
 
 export default function CodeContainer(props) {
 
-  const html = `
-  <h1>Hello</h1>
-  <p>My Nombre es chancho</p>
-  `;
+  const html = JSON.parse(props.code);
 
   return (
     <div>
-      {/* {JSON.parse(props.code)} */}
-      {/* {console.log(JSON.parse(props.code))} */}
       {props.code ?
         <div className='code__container'>
+        <CopyToClipboard text={html}
+          onCopy={() => console.log('copied')}>
+          <Button icon={<Copy />} label="Copy to Clipboard" primary />
+        </CopyToClipboard>
         <SyntaxHighlighter language="html" style={shadesOfPurple}>
-          {JSON.parse(props.code)}
+          {html}
         </SyntaxHighlighter>
         </div>
         :
-        null
+        <Code size='xlarge' />
       }
       <style jsx>{`
       .code__container{
         max-width:800px;
-        height:100%;
+        font-size: 0.75rem;
       }
-
       `}</style>
     </div>
   )

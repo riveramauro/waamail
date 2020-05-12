@@ -48,7 +48,13 @@ export default function Home() {
           <Heading>WAAMail</Heading>
           <Form modifiedHtml={handleModifiedHtml} />
         </Box>
-        <Box flex={{'grow':2}} pad='small' background='brand' align='center' overflow='scroll'>
+        <Box
+          flex={{'grow':2}}
+          pad='small'
+          background='brand'
+          align='center'
+          overflow='scroll'
+          >
           <CodeContainer code={code}></CodeContainer>
         </Box>
       </Box>

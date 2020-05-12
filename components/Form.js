@@ -18,7 +18,7 @@ export default function Form(props) {
   const serverOptions = [
     {label: 'Horsham', value: 'horsham'},
     {label: 'Raritan', value: 'raritan'},
-    {label: 'Titusville', value: 'Titusville'}
+    {label: 'Titusville', value: 'titusville'}
   ]
 
   function handleForm(e) {
@@ -37,7 +37,6 @@ export default function Form(props) {
       const path = `http://www.grp360.net/${formData.server}/${formData.jobNum}/images/`
       let updatedHtml = html.replace(/images\//gi, path);
       props.modifiedHtml(updatedHtml);
-      // setFile(updatedHtml);
     }
   }
 
