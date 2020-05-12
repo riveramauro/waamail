@@ -26,14 +26,14 @@ export default function FileDropzone(props) {
       {
         isDragActive ?
           <p>Drop the files here ...</p> :
-          <p>Drag 'n' drop some files here, <br/> or click to select files</p>
+          <p>Drag 'n' drop HTML file here, <br/> or click to select file</p>
       }
       </div>
     <style jsx>{`
     .dragContainer {
       background: #efefef;
       color: #673AB7;
-      height: 20vh;
+      height: 15vh;
       width: 100%;
       display: flex;
       align-items: center;

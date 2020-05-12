@@ -13,13 +13,9 @@ import FileDropzone from "../components/FileDropzone";
 export default function Form(props) {
 
   const [file, setFile] = useState(null);
-  const [fileName, setFileName] = useState(null)
+  const [fileName, setFileName] = useState(null);
 
-  const serverOptions = [
-    {label: 'Horsham', value: 'horsham'},
-    {label: 'Raritan', value: 'raritan'},
-    {label: 'Titusville', value: 'titusville'}
-  ]
+  const serverOptions = ['horsham','raritan','titusville'];
 
   function handleForm(e) {
     e.preventDefault();
@@ -55,8 +51,6 @@ export default function Form(props) {
               name="server"
               placeholder="Pick a server"
               options={serverOptions}
-              labelKey="label"
-              valueKey="value"
             />
           </FormField>
         </div>
@@ -66,6 +60,7 @@ export default function Form(props) {
         <Button
           type="submit"
           label="Submit"
+          disabled={!file ? true : false}
         />
       </form>
       </Box>
