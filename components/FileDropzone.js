@@ -33,7 +33,7 @@ export default function FileDropzone(props) {
     .dragContainer {
       background: #efefef;
       color: #673AB7;
-      height: 200px;
+      height: 20vh;
       width: 100%;
       display: flex;
       align-items: center;

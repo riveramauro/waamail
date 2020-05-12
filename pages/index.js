@@ -43,13 +43,12 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" />
       </Head>
-      <Box direction='row' flex >
-        <Box flex pad='small' align='center' justify='start'>
+      <Box direction='row' flex fill>
+        <Box flex={{'grow':1}} pad='small' align='center' justify='start'>
           <Heading>WAAMail</Heading>
           <Form modifiedHtml={handleModifiedHtml} />
         </Box>
-        <Box flex pad='large' background='brand' align='center'>
-          <p>Code editor here</p>
+        <Box flex={{'grow':2}} pad='small' background='brand' align='center' overflow='scroll'>
           <CodeContainer code={code}></CodeContainer>
         </Box>
       </Box>

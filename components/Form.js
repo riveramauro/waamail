@@ -10,7 +10,7 @@ import {
 import FileDropzone from "../components/FileDropzone";
 
 
-export default function Form() {
+export default function Form(props) {
 
   const [file, setFile] = useState(null);
   const [fileName, setFileName] = useState(null)
@@ -26,9 +26,7 @@ export default function Form() {
     // Save form field to obj
     let formData = new FormData(e.target);
     formData = Object.fromEntries(formData);
-    console.log(formData);
-    // return;
-
+  
     let html = file;
     
     const filereader = new FileReader();
@@ -38,7 +36,8 @@ export default function Form() {
       let html = JSON.stringify(e.target.result);
       const path = `http://www.grp360.net/${formData.server}/${formData.jobNum}/images/`
       let updatedHtml = html.replace(/images\//gi, path);
-      setFileName(updatedHtml);
+      props.modifiedHtml(updatedHtml);
+      // setFile(updatedHtml);
     }
   }
 
