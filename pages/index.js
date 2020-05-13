@@ -42,6 +42,18 @@ export default function Home() {
         <title>WAAMail</title>
         <link rel="icon" href="/favicon.ico" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" />
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-166351780-1" />
+        <script
+            dangerouslySetInnerHTML={{
+              __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'UA-166351780-1');
+          `,
+            }}
+          />
+
       </Head>
       <Box direction='row' flex fill>
         <Box flex={{'grow':1}} pad='small' align='center' justify='start'>
