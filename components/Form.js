@@ -15,7 +15,7 @@ export default function Form(props) {
   const [file, setFile] = useState(null);
   const [fileName, setFileName] = useState(null);
 
-  const serverOptions = ['horsham','raritan','titusville'];
+  const serverOptions = ['Horsham','Raritan','Titusville'];
 
   function handleForm(e) {
     e.preventDefault();
