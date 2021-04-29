@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import Form from "../components/Form";
 import CodeContainer from "../components/CodeContainer";
-import { Grommet, Box, Heading } from "grommet";
+import { Grommet, Box, Heading, Grid } from "grommet";
 import { useState } from 'react';
 
 export default function Home() {
@@ -55,21 +55,34 @@ export default function Home() {
           />
 
       </Head>
-      <Box direction='row' flex fill>
-        <Box flex={{'grow':1}} pad='small' align='center' justify='start'>
-          <Heading>WAAMail</Heading>
-          <Form modifiedHtml={handleModifiedHtml} />
-        </Box>
+      <Grid
+        fill
+        columns={['flex', 'flex']}
+        rows={['flex']}
+        areas={[
+          {name: 'docDrop', start: [0,0], end: [0,0]},
+          {name: 'preview', start: [1,0], end: [1,0]},
+        ]}
+      >
         <Box
-          flex={{'grow':2}}
-          pad='small'
-          background='brand'
-          align='center'
-          overflow='scroll'
-          >
-          <CodeContainer code={code}></CodeContainer>
+          gridArea="docDrop"
+          background="brand"
+          direction="column"
+          pad="medium"
+        >
+          <Box pad="medium" background="light-1" height={{"min": "medium"}}>
+            <Heading>WAAMail</Heading>
+            <Form modifiedHtml={handleModifiedHtml} />
+          </Box>
+          <Box pad="small" overflow="scroll" height={{"max": "large"}}>
+            <CodeContainer code={code}></CodeContainer>
+          </Box>
         </Box>
-      </Box>
+        <Box gridArea="preview" background="light-2" overflow="scroll">
+          <div dangerouslySetInnerHTML={{__html: JSON.parse(code)}}></div>
+        </Box>
+        
+      </Grid>
     </Grommet>
   )
 }

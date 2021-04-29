@@ -26,7 +26,6 @@ export default function CodeContainer(props) {
       }
       <style jsx>{`
       .code__container{
-        max-width:800px;
         font-size: 0.75rem;
       }
       `}</style>
