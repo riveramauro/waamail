@@ -42,7 +42,7 @@ export default function Form(props) {
   }
   return (      
     <Box>
-      <h4>{fileName}</h4>
+      {file ? <p>{fileName}</p> : ''}
       <form onSubmit={handleForm}>
         <FileDropzone getFile={handleFileDrop} />
         <div>
@@ -57,11 +57,19 @@ export default function Form(props) {
         <div>
           <TextInput placeholder="555555" type="text" name="jobNum" id="jobNum" />
         </div>
-        <Button
-          type="submit"
-          label="Submit"
-          disabled={!file ? true : false}
-        />
+        <Box direction="row" justify="between" margin={{top: 'medium'}}>
+          <Button
+            label="Preview"
+            disabled={!file ? true : false}
+          />
+          <Button
+            type="submit"
+            label="Submit"
+            disabled={!file ? true : false}
+            primary
+          />
+        </Box>
+        
       </form>
       </Box>
   )

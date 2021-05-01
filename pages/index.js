@@ -70,11 +70,11 @@ export default function Home() {
           direction="column"
           pad="medium"
         >
-          <Box pad="medium" background="light-1" height={{"min": "medium"}}>
-            <Heading>WAAMail</Heading>
+          <Box pad="medium" background="light-1" height="60%">
+            <Heading size="small">WAAMail</Heading>
             <Form modifiedHtml={handleModifiedHtml} />
           </Box>
-          <Box pad="small" overflow="scroll" height={{"max": "large"}}>
+          <Box pad="small" overflow="scroll" height="40%">
             <CodeContainer code={code}></CodeContainer>
           </Box>
         </Box>
