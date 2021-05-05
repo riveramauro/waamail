@@ -43,16 +43,18 @@ export default function Form(props) {
     setFileName(incomingFile[0].name);
   }
 
-  const updateRecipients = () => {
+  const addRecipient = () => {
     if(recipientField){
       console.log('adding to list');
-      setRecipientList([...recipientList, recipientField])
+      setRecipientList(recipientList => [...recipientList, recipientField])
+      setRecipientField('')
     }
   }
-  useEffect(() => setRecipientField(''), [recipientList])
 
-  const removeRecipient = () => {
-    console.log('remove recipient');
+  const removeRecipient = (indexNum) => {
+    console.log(`remove recipient indexed: ${indexNum}.`);
+    const updatedList = recipientList.filter((item, index) => index !== indexNum)
+    setRecipientList([...updatedList])
   }
 
   return (      
@@ -82,7 +84,7 @@ export default function Form(props) {
            />
            <Button
             label="Add"
-            onClick={updateRecipients}
+            onClick={addRecipient}
            />
         </Box>
         <Box direction="row" justify="between" margin={{top: 'medium'}}>
@@ -98,20 +100,15 @@ export default function Form(props) {
           />
         </Box>
       </form>
-      <div className="recpList">
-      {recipientList.map((recipient, index) => {
-          return (
-            <div key={index} onClick={removeRecipient}>
-              <div>{recipient}</div>
-
-            </div>
-          )
-        })}
-      </div>
       <List
         data={recipientList}
         action={(item, index) => (
-          <Button hoverIndicator label="-" />
+          <Button
+          key={index}
+          hoverIndicator
+          label="X"
+          onClick={() => removeRecipient(index)}
+          />
         )}
       />
       </Box>

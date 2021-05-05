@@ -8,7 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "grommet": "^2.14.0",
+    "grommet": "^2.17.2",
     "grommet-icons": "^4.4.0",
     "next": "^10.1.3",
     "nodemailer": "^6.4.6",
