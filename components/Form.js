@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import {
   Box,
   TextInput,
-  Grommet,
   FormField,
   Select,
-  Button
+  Button,
+  List
 } from 'grommet';
 import FileDropzone from "../components/FileDropzone";
 
@@ -14,6 +14,8 @@ export default function Form(props) {
 
   const [file, setFile] = useState(null);
   const [fileName, setFileName] = useState(null);
+  const [recipientField, setRecipientField] = useState('')
+  const [recipientList, setRecipientList] = useState([])
 
   const serverOptions = ['Horsham','Raritan','Titusville', 'Seattle'];
 
@@ -36,10 +38,23 @@ export default function Form(props) {
     }
   }
 
-  function handleFileDrop(incomingFile) {
+  const handleFileDrop = (incomingFile) => {
     setFile(incomingFile[0]);
     setFileName(incomingFile[0].name);
   }
+
+  const updateRecipients = () => {
+    if(recipientField){
+      console.log('adding to list');
+      setRecipientList([...recipientList, recipientField])
+    }
+  }
+  useEffect(() => setRecipientField(''), [recipientList])
+
+  const removeRecipient = () => {
+    console.log('remove recipient');
+  }
+
   return (      
     <Box>
       {file ? <p>{fileName}</p> : ''}
@@ -57,6 +72,19 @@ export default function Form(props) {
         <div>
           <TextInput placeholder="555555" type="text" name="jobNum" id="jobNum" />
         </div>
+        <Box direction="row" margin={{top: '10px'}}>
+          <TextInput
+            name="recipient"
+            type="email"
+            placeholder="email@domain.com"
+            value={recipientField}
+            onChange={e => setRecipientField(e.target.value)}
+           />
+           <Button
+            label="Add"
+            onClick={updateRecipients}
+           />
+        </Box>
         <Box direction="row" justify="between" margin={{top: 'medium'}}>
           <Button
             label="Preview"
@@ -69,8 +97,23 @@ export default function Form(props) {
             primary
           />
         </Box>
-        
       </form>
+      <div className="recpList">
+      {recipientList.map((recipient, index) => {
+          return (
+            <div key={index} onClick={removeRecipient}>
+              <div>{recipient}</div>
+
+            </div>
+          )
+        })}
+      </div>
+      <List
+        data={recipientList}
+        action={(item, index) => (
+          <Button hoverIndicator label="-" />
+        )}
+      />
       </Box>
   )
 }

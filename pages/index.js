@@ -70,13 +70,13 @@ export default function Home() {
           direction="column"
           pad="medium"
         >
-          <Box pad="medium" background="light-1" height="60%">
+          <Box pad="medium" background="light-1" height="100%">
             <Heading size="small">WAAMail</Heading>
             <Form modifiedHtml={handleModifiedHtml} />
           </Box>
-          <Box pad="small" overflow="scroll" height="40%">
+          {/* <Box pad="small" overflow="scroll" height="40%">
             <CodeContainer code={code}></CodeContainer>
-          </Box>
+          </Box> */}
         </Box>
         <Box gridArea="preview" background="light-2" overflow="scroll">
           <div dangerouslySetInnerHTML={{__html: JSON.parse(code)}}></div>
