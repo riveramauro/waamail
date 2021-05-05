@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import Form from "../components/Form";
+import EmailForm from "../components/Form";
 import CodeContainer from "../components/CodeContainer";
 import { Grommet, Box, Heading, Grid } from "grommet";
 import { useState } from 'react';
@@ -72,7 +72,7 @@ export default function Home() {
         >
           <Box pad="medium" background="light-1" height="100%">
             <Heading size="small">WAAMail</Heading>
-            <Form modifiedHtml={handleModifiedHtml} />
+            <EmailForm modifiedHtml={handleModifiedHtml} />
           </Box>
           {/* <Box pad="small" overflow="scroll" height="40%">
             <CodeContainer code={code}></CodeContainer>
