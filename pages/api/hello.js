@@ -23,9 +23,36 @@ let main = async (html) => {
 }
 
 export default (req, res) => {
-  const html = JSON.parse(req.body);
-  // console.log(html);
-  main(html).catch(console.error)
+  // const html = JSON.parse(req.body);
+  console.log(JSON.parse(req.body));
+  // main(html).catch(console.error)
   res.statusCode = 200
   res.json({ name: 'John Doe' })
 }
+
+// const sgMail = require('@sendgrid/mail')
+// sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+
+// export default (req, res) => {
+  
+//   const msg = {
+//     to: 'me+waatesting@mauriciorivera.co',
+//     from: 'me+waatesting@mauriciorivera.co',
+//     subject: 'Testing Subject',
+//     text: 'someting nice',
+//     html: req.body
+//   }
+  
+//   sgMail
+//     .send(msg)
+//     .then((response) => {
+//       console.log(response)
+//       res.statusCode = 200
+//       res.end(JSON.stringify({ name: 'John Doe 2', data: response })) 
+//     })
+//     .catch((error) => {
+//       console.error(error)
+//       return error
+//   }) 
+  
+// }

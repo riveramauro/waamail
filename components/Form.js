@@ -10,14 +10,13 @@ import {
 } from 'grommet';
 import FileDropzone from "../components/FileDropzone";
 
-
-const defaultValues = {
-  server: '',
-  jobNum: ''
-}
-
-
 export default function EmailForm(props) {
+
+  const defaultValues = {
+    server: '',
+    jobNum: ''
+  }
+  const serverOptions = ['Horsham','Raritan','Titusville', 'Seattle'];
 
   const [file, setFile] = useState(null);
   const [fileName, setFileName] = useState(null);
@@ -25,9 +24,27 @@ export default function EmailForm(props) {
   const [recipientList, setRecipientList] = useState([])
   const [formValues, setFormValues] = useState(defaultValues)
 
-  const serverOptions = ['Horsham','Raritan','Titusville', 'Seattle'];
+  const sendMail = (file) => {
 
-  function handleForm() {
+    const data = {
+      recipients: recipientList,
+      email: file
+    }
+    
+    fetch('/api/hello', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    })
+      .then(res => res.json())
+      .then(data => console.log(data))
+      .catch(res => console.log(res))
+  }
+
+  useEffect(() => {
+    console.log(file)
+  }, [file])
+
+  const handleForm = () => {
 
     const formData = formValues;
     const html = file;
@@ -70,8 +87,8 @@ export default function EmailForm(props) {
         onChange={nextVal => setFormValues(nextVal)}
         onSubmit={e => {
           console.log(e.value)
-          handleForm(e)
-          setFormValues(defaultValues)
+          sendMail(recipientList)
+          // setFormValues(defaultValues)
         }}
       >
         <FileDropzone getFile={handleFileDrop} />
