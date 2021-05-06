@@ -13,22 +13,28 @@ import FileDropzone from "../components/FileDropzone";
 export default function EmailForm(props) {
 
   const defaultValues = {
-    server: '',
-    jobNum: ''
+    server: 'Seattle',
+    jobNum: '858183'
   }
   const serverOptions = ['Horsham','Raritan','Titusville', 'Seattle'];
 
   const [file, setFile] = useState(null);
+  const [emailHTML, setEmailHTML] = useState(null)
+  const [isHTMLModified, setisHTMLModified] = useState(false)
   const [fileName, setFileName] = useState(null);
   const [recipientField, setRecipientField] = useState('')
   const [recipientList, setRecipientList] = useState([])
   const [formValues, setFormValues] = useState(defaultValues)
 
-  const sendMail = (file) => {
+  useEffect(() => {
+    props.modifiedHtml(emailHTML)
+  }, [emailHTML])
+
+  const sendMail = () => {
 
     const data = {
       recipients: recipientList,
-      email: file
+      email: emailHTML
     }
     
     fetch('/api/hello', {
@@ -36,15 +42,11 @@ export default function EmailForm(props) {
       body: JSON.stringify(data)
     })
       .then(res => res.json())
-      .then(data => console.log(data))
+      .then(data => console.log(JSON.parse(data.data)))
       .catch(res => console.log(res))
   }
 
-  useEffect(() => {
-    console.log(file)
-  }, [file])
-
-  const handleForm = () => {
+  const modifyHTML = () => {
 
     const formData = formValues;
     const html = file;
@@ -56,7 +58,8 @@ export default function EmailForm(props) {
       let html = JSON.stringify(e.target.result);
       const path = `http://www.grp360.net/${formData.server}/${formData.jobNum}/images/`
       let updatedHtml = html.replace(/images\//gi, path);
-      props.modifiedHtml(updatedHtml);
+      setEmailHTML(updatedHtml)
+      setisHTMLModified(true)
     }
   }
 
@@ -88,7 +91,6 @@ export default function EmailForm(props) {
         onSubmit={e => {
           console.log(e.value)
           sendMail(recipientList)
-          // setFormValues(defaultValues)
         }}
       >
         <FileDropzone getFile={handleFileDrop} />
@@ -120,12 +122,12 @@ export default function EmailForm(props) {
           <Button
             label="Preview"
             disabled={!file ? true : false}
-            onClick={() => handleForm()}
+            onClick={() => modifyHTML()}
           />
           <Button
             type="submit"
             label="Submit"
-            disabled={!file ? true : false}
+            disabled={!isHTMLModified ? true : false}
             primary
           />
         </Box>

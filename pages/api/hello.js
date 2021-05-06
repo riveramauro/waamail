@@ -24,10 +24,10 @@ let main = async (html) => {
 
 export default (req, res) => {
   // const html = JSON.parse(req.body);
-  console.log(JSON.parse(req.body));
+  // console.log(JSON.parse(req.body));
   // main(html).catch(console.error)
   res.statusCode = 200
-  res.json({ name: 'John Doe' })
+  res.json({ data: req.body })
 }
 
 // const sgMail = require('@sendgrid/mail')
