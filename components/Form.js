@@ -30,20 +30,27 @@ export default function EmailForm(props) {
     props.modifiedHtml(emailHTML)
   }, [emailHTML])
 
-  const sendMail = () => {
+  const sendMail = async () => {
 
     const data = {
       recipients: recipientList,
       email: emailHTML
     }
+    let apiResponse
+    try {
+      apiResponse = await fetch('/api/123')  
+    } catch (error) {
+      console.log('hello error:', error);
+    }
+    console.log(apiResponse);
     
-    fetch('/api/hello', {
-      method: 'POST',
-      body: JSON.stringify(data)
-    })
-      .then(res => res.json())
-      .then(data => console.log(JSON.parse(data.data)))
-      .catch(res => console.log(res))
+
+    // console.log(apiResponse);
+
+
+      // .then(res => res.json())
+      // .then(data => console.log(data))
+      // .catch(err => console.log(err))
   }
 
   const modifyHTML = () => {
@@ -89,7 +96,7 @@ export default function EmailForm(props) {
         value={formValues}
         onChange={nextVal => setFormValues(nextVal)}
         onSubmit={e => {
-          console.log(e.value)
+          // console.log(e.value)
           sendMail(recipientList)
         }}
       >

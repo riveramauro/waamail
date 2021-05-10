@@ -1,37 +1,42 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
-import nodemailer from "nodemailer";
+const sgMail = require('@sendgrid/mail')
+sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
-let transport = nodemailer.createTransport({
-  host: "smtp.mailtrap.io",
-  port: 2525,
-  auth: {
-    user: "9fb7f1504556a5",
-    pass: "fb0e5c2c4bec94"
-  }
-});
-
-let main = async (html) => {
-  let info = await transport.sendMail({
-    from: '"Mauricio Rivera" <me+1@mauriciorivera.co>', // sender address
-    to: "me@mauriciorivera.co", // list of receivers
-    subject: "Hello ✔", // Subject line
-    text: "N/A", // plain text body
-    html: html // html body
-  });
-  console.log(info);
+const msg = {
+  to: 'mauriciorivera+test@wearealexander.com',
+  from: 'mauriciorivera+test@wearealexander.com',
+  subject: 'Testing',
+  html: '<strong>Testing</strong>'
 }
 
-export default (req, res) => {
-  // const html = JSON.parse(req.body);
-  // console.log(JSON.parse(req.body));
-  // main(html).catch(console.error)
-  res.statusCode = 200
-  res.json({ data: req.body })
+export default async (req, res) => {
+  return res.status(500).json(res)
 }
+//   let response
+//   try {
+//     // response = await sgMail(msg)
+//     response = false
+//     throw new Error('Error here')
+//   } catch (err) {
+//     // console.log(err)
+//     return res.status(500).send(err)
+//       // statusCode: err.statusCode || 500,
+//       // body: JSON.stringify({
+//       //   error: err.message
+//       // })
+//   }
+//   console.log(res, response);
+//   return res.status(200).send(response)
+// }
 
-// const sgMail = require('@sendgrid/mail')
-// sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+// export default (req, res) => {
+//   // const html = JSON.parse(req.body);
+//   // console.log(JSON.parse(req.body));
+//   // main(html).catch(console.error)
+//   res.statusCode = 200
+//   res.json({ data: req.body})
+// }
 
 // export default (req, res) => {
   
