@@ -14,7 +14,8 @@ export default function EmailForm(props) {
 
   const defaultValues = {
     server: 'Seattle',
-    jobNum: '858183'
+    jobNum: '858183',
+    subject: `Testing subject ${new Date().toLocaleTimeString()}`
   }
   const serverOptions = ['Horsham','Raritan','Titusville', 'Seattle'];
 
@@ -25,6 +26,15 @@ export default function EmailForm(props) {
   const [recipientField, setRecipientField] = useState('')
   const [recipientList, setRecipientList] = useState([])
   const [formValues, setFormValues] = useState(defaultValues)
+  const [successEmailSend, setSuccessEmailSend] = useState({
+    sent: false,
+    error: null
+  })
+
+  // TODO! Remove when done testing
+  setTimeout(() => {
+    setFormValues({...defaultValues, subject: `Testing subject ${new Date().toLocaleTimeString()}`})
+  }, 1000);
 
   useEffect(() => {
     props.modifiedHtml(emailHTML)
@@ -34,23 +44,31 @@ export default function EmailForm(props) {
 
     const data = {
       recipients: recipientList,
-      email: emailHTML
+      email: emailHTML,
+      subject: formValues.subject
     }
-    let apiResponse
-    try {
-      apiResponse = await fetch('/api/123')  
-    } catch (error) {
-      console.log('hello error:', error);
-    }
-    console.log(apiResponse);
+
+    let apiResponse;
     
-
-    // console.log(apiResponse);
-
-
-      // .then(res => res.json())
-      // .then(data => console.log(data))
-      // .catch(err => console.log(err))
+    try {
+      apiResponse = await fetch('/api/hello', {
+        method: 'POST',
+        body: JSON.stringify(data)
+      });
+      if(!apiResponse.ok){
+        let error = await apiResponse.json()
+          .then(res => {
+            error = JSON.stringify(res)
+            return error
+          });
+        throw new Error(error);
+      }
+      return apiResponse
+    } catch (error) {
+      //TODO Logic for error when sending here
+      // const errorMessage = JSON.parse(error.message)
+      // setSuccessEmailSend({sent: true})
+    }
   }
 
   const modifyHTML = () => {
@@ -101,15 +119,20 @@ export default function EmailForm(props) {
         }}
       >
         <FileDropzone getFile={handleFileDrop} />
-        <FormField label="Server" name="server">
-          <Select
-            name="server"
-            placeholder="Pick a server"
-            options={serverOptions}
-          />
-        </FormField>
-        <FormField label="Job Number" name="jobNum">
-          <TextInput placeholder="555555" type="text" name="jobNum" />
+        <Box direction="row" gap="small" margin={{top: '10px'}}>
+          <FormField label="Server" name="server">
+            <Select
+              name="server"
+              placeholder="Pick a server"
+              options={serverOptions}
+            />
+          </FormField>
+          <FormField label="Job Number" name="jobNum">
+            <TextInput placeholder="555555" type="text" name="jobNum" />
+          </FormField>
+        </Box>
+        <FormField label="Subject" name="subject">
+          <TextInput type="text" name="subject" />
         </FormField>
         <FormField label="Recepient">
           <Box direction="row" margin={{top: '10px'}}>
@@ -138,8 +161,19 @@ export default function EmailForm(props) {
             primary
           />
         </Box>
-        
       </Form>
+      <Box>
+      {successEmailSend.sent ?
+        successEmailSend.error ? (
+          <div>
+            <b>Something went wrong!</b>
+            <br />
+            <p>{successEmailSend.error}</p>
+          </div>
+        )
+        : <b>Email Sent!</b>
+      :''}
+      </Box>
       <List
         data={recipientList}
         action={(item, index) => (

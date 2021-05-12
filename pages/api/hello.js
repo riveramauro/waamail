@@ -3,61 +3,39 @@
 const sgMail = require('@sendgrid/mail')
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
-const msg = {
+let msg = {
   to: 'mauriciorivera+test@wearealexander.com',
   from: 'mauriciorivera+test@wearealexander.com',
-  subject: 'Testing',
-  html: '<strong>Testing</strong>'
+  subject: '',
+  html: ''
 }
 
 export default async (req, res) => {
-  return res.status(500).json(res)
+  const data = JSON.parse(req.body);
+  const recipients =  data.recipients;
+  const htmlEmail = JSON.parse(data.email)
+  const subject = data.subject
+
+  msg = {...msg,
+    to: recipients,
+    subject: subject,
+    html: htmlEmail
+  }
+
+  let senderResponse;
+  try {
+    senderResponse = await sgMail.send(msg);
+    console.log(senderResponse);
+    // if(senderResponse.statusCode !== 202){
+    //   throw new Error(senderResponse);
+    // }
+    return res.status(200).json({senderResponse})
+  } catch (error) {
+    console.log(error);
+    if(error.code){
+      return res.status(error.code).send(JSON.stringify(error))
+    }
+    return res.status(400).send(error)
+  }
+
 }
-//   let response
-//   try {
-//     // response = await sgMail(msg)
-//     response = false
-//     throw new Error('Error here')
-//   } catch (err) {
-//     // console.log(err)
-//     return res.status(500).send(err)
-//       // statusCode: err.statusCode || 500,
-//       // body: JSON.stringify({
-//       //   error: err.message
-//       // })
-//   }
-//   console.log(res, response);
-//   return res.status(200).send(response)
-// }
-
-// export default (req, res) => {
-//   // const html = JSON.parse(req.body);
-//   // console.log(JSON.parse(req.body));
-//   // main(html).catch(console.error)
-//   res.statusCode = 200
-//   res.json({ data: req.body})
-// }
-
-// export default (req, res) => {
-  
-//   const msg = {
-//     to: 'me+waatesting@mauriciorivera.co',
-//     from: 'me+waatesting@mauriciorivera.co',
-//     subject: 'Testing Subject',
-//     text: 'someting nice',
-//     html: req.body
-//   }
-  
-//   sgMail
-//     .send(msg)
-//     .then((response) => {
-//       console.log(response)
-//       res.statusCode = 200
-//       res.end(JSON.stringify({ name: 'John Doe 2', data: response })) 
-//     })
-//     .catch((error) => {
-//       console.error(error)
-//       return error
-//   }) 
-  
-// }
