@@ -139,7 +139,7 @@ export default function EmailForm(props) {
         <FormField label="Subject" name="subject">
           <TextInput type="text" name="subject" />
         </FormField>
-        <FormField label="Recipient" pad="small">
+        <FormField label="Recipient" pad>
           <Box direction="row" margin={{top: '10px'}}>
             <TextInput
               type="email"
