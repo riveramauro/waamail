@@ -1,58 +1,38 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
-import nodemailer from "nodemailer";
+const sgMail = require('@sendgrid/mail')
+sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
-let transport = nodemailer.createTransport({
-  host: "smtp.mailtrap.io",
-  port: 2525,
-  auth: {
-    user: "9fb7f1504556a5",
-    pass: "fb0e5c2c4bec94"
+let msg = {
+  to: 'mauriciorivera+test@wearealexander.com',
+  from: 'mauriciorivera+test@wearealexander.com',
+  subject: '',
+  html: ''
+}
+
+export default async (req, res) => {
+  const data = JSON.parse(req.body);
+  const recipients =  data.recipients;
+  const htmlEmail = JSON.parse(data.email)
+  const subject = data.subject
+
+  msg = {...msg,
+    to: recipients,
+    subject: subject,
+    html: htmlEmail
   }
-});
 
-let main = async (html) => {
-  let info = await transport.sendMail({
-    from: '"Mauricio Rivera" <me+1@mauriciorivera.co>', // sender address
-    to: "me@mauriciorivera.co", // list of receivers
-    subject: "Hello ✔", // Subject line
-    text: "N/A", // plain text body
-    html: html // html body
-  });
-  console.log(info);
+  let senderResponse;
+  try {
+    senderResponse = await sgMail.send(msg);
+    console.log(senderResponse);
+    return res.status(200).json({senderResponse})
+  } catch (error) {
+    console.log(error);
+    if(error.response){
+      return res.status(error.code).send(JSON.stringify(error))
+    }
+    return res.status(400).send(error)
+  }
+
 }
-
-export default (req, res) => {
-  // const html = JSON.parse(req.body);
-  // console.log(JSON.parse(req.body));
-  // main(html).catch(console.error)
-  res.statusCode = 200
-  res.json({ data: req.body })
-}
-
-// const sgMail = require('@sendgrid/mail')
-// sgMail.setApiKey(process.env.SENDGRID_API_KEY)
-
-// export default (req, res) => {
-  
-//   const msg = {
-//     to: 'me+waatesting@mauriciorivera.co',
-//     from: 'me+waatesting@mauriciorivera.co',
-//     subject: 'Testing Subject',
-//     text: 'someting nice',
-//     html: req.body
-//   }
-  
-//   sgMail
-//     .send(msg)
-//     .then((response) => {
-//       console.log(response)
-//       res.statusCode = 200
-//       res.end(JSON.stringify({ name: 'John Doe 2', data: response })) 
-//     })
-//     .catch((error) => {
-//       console.error(error)
-//       return error
-//   }) 
-  
-// }
