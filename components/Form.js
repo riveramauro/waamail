@@ -13,9 +13,9 @@ import FileDropzone from "../components/FileDropzone";
 export default function EmailForm(props) {
 
   const defaultValues = {
-    server: 'Seattle',
-    jobNum: '858183',
-    subject: `Testing subject ${new Date().toLocaleTimeString()}`
+    server: '',
+    jobNum: '',
+    subject: ''
   }
   const serverOptions = ['Horsham','Raritan','Titusville', 'Seattle'];
 
@@ -26,15 +26,11 @@ export default function EmailForm(props) {
   const [recipientField, setRecipientField] = useState('')
   const [recipientList, setRecipientList] = useState([])
   const [formValues, setFormValues] = useState(defaultValues)
-  const [successEmailSend, setSuccessEmailSend] = useState({
-    sent: false,
-    error: null
-  })
+  const [successEmailSend, setSuccessEmailSend] = useState(false)
 
-  // TODO! Remove when done testing
-  setTimeout(() => {
-    setFormValues({...defaultValues, subject: `Testing subject ${new Date().toLocaleTimeString()}`})
-  }, 1000);
+  // setTimeout(() => {
+  //   setFormValues({...defaultValues, subject: `Testing subject ${new Date().toLocaleTimeString()}`})
+  // }, 1000);
 
   useEffect(() => {
     props.modifiedHtml(emailHTML)
@@ -65,9 +61,8 @@ export default function EmailForm(props) {
       }
       return apiResponse
     } catch (error) {
+      console.log(error);
       //TODO Logic for error when sending here
-      // const errorMessage = JSON.parse(error.message)
-      // setSuccessEmailSend({sent: true})
     }
   }
 
@@ -107,6 +102,12 @@ export default function EmailForm(props) {
     setRecipientList([...updatedList])
   }
 
+  const resetForm = () => {
+    setFormValues(defaultValues)
+    setFileName(null)
+    setFile(null)
+  }
+
   return (      
     <Box>
       {file ? <p>{fileName}</p> : ''}
@@ -114,8 +115,12 @@ export default function EmailForm(props) {
         value={formValues}
         onChange={nextVal => setFormValues(nextVal)}
         onSubmit={e => {
-          // console.log(e.value)
-          sendMail(recipientList)
+          const res = sendMail()
+          res.then(data => {
+            if(data.ok){
+              setSuccessEmailSend(true)
+            }
+          })
         }}
       >
         <FileDropzone getFile={handleFileDrop} />
@@ -134,7 +139,7 @@ export default function EmailForm(props) {
         <FormField label="Subject" name="subject">
           <TextInput type="text" name="subject" />
         </FormField>
-        <FormField label="Recepient">
+        <FormField label="Recipient" pad="small">
           <Box direction="row" margin={{top: '10px'}}>
             <TextInput
               type="email"
@@ -148,7 +153,25 @@ export default function EmailForm(props) {
             />
           </Box>
         </FormField>
+        <Box>
+        <List
+          data={recipientList}
+          action={(item, index) => (
+            <Button
+            key={index}
+            hoverIndicator
+            label="X"
+            onClick={() => removeRecipient(index)}
+            />
+          )}
+        />
+        </Box>
         <Box direction="row" justify="between" margin={{top: 'medium'}}>
+          <Button
+            label="Reset Form"
+            color="accent-4"
+            onClick={() => resetForm()}
+          />
           <Button
             label="Preview"
             disabled={!file ? true : false}
@@ -157,34 +180,14 @@ export default function EmailForm(props) {
           <Button
             type="submit"
             label="Submit"
-            disabled={!isHTMLModified ? true : false}
+            disabled={(!isHTMLModified || recipientList.length < 1) ? true : false}
             primary
           />
         </Box>
       </Form>
       <Box>
-      {successEmailSend.sent ?
-        successEmailSend.error ? (
-          <div>
-            <b>Something went wrong!</b>
-            <br />
-            <p>{successEmailSend.error}</p>
-          </div>
-        )
-        : <b>Email Sent!</b>
-      :''}
+      {successEmailSend ? <b>Email Sent!</b> : ''}
       </Box>
-      <List
-        data={recipientList}
-        action={(item, index) => (
-          <Button
-          key={index}
-          hoverIndicator
-          label="X"
-          onClick={() => removeRecipient(index)}
-          />
-        )}
-      />
       </Box>
   )
 }

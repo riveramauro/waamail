@@ -26,13 +26,10 @@ export default async (req, res) => {
   try {
     senderResponse = await sgMail.send(msg);
     console.log(senderResponse);
-    // if(senderResponse.statusCode !== 202){
-    //   throw new Error(senderResponse);
-    // }
     return res.status(200).json({senderResponse})
   } catch (error) {
     console.log(error);
-    if(error.code){
+    if(error.response){
       return res.status(error.code).send(JSON.stringify(error))
     }
     return res.status(400).send(error)
