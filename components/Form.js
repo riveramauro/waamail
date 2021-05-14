@@ -47,7 +47,7 @@ export default function EmailForm(props) {
     let apiResponse;
     
     try {
-      apiResponse = await fetch('/api/hello', {
+      apiResponse = await fetch('/api/emailsender', {
         method: 'POST',
         body: JSON.stringify(data)
       });
@@ -106,6 +106,12 @@ export default function EmailForm(props) {
     setFormValues(defaultValues)
     setFileName(null)
     setFile(null)
+  }
+
+  const onAcidApi = async () => {
+    fetch('/api/emailtester')
+      .then(res => res.text())
+      .then(data => console.log(data))
   }
 
   return (      
@@ -182,6 +188,10 @@ export default function EmailForm(props) {
             label="Submit"
             disabled={(!isHTMLModified || recipientList.length < 1) ? true : false}
             primary
+          />
+          <Button
+            label="Acid"
+            onClick={() => onAcidApi()}
           />
         </Box>
       </Form>
