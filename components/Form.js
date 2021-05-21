@@ -36,13 +36,22 @@ export default function EmailForm(props) {
     props.modifiedHtml(emailHTML)
   }, [emailHTML])
 
-  const sendMail = async () => {
+  const data = {
+    recipients: recipientList,
+    email: emailHTML,
+    subject: formValues.subject
+  }
 
-    const data = {
-      recipients: recipientList,
-      email: emailHTML,
-      subject: formValues.subject
-    }
+  const onAcidApi = async () => {
+    fetch('/api/emailtester', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(data => console.log(data))
+  }
+
+  const sendMail = async () => {
 
     let apiResponse;
     
@@ -106,12 +115,6 @@ export default function EmailForm(props) {
     setFormValues(defaultValues)
     setFileName(null)
     setFile(null)
-  }
-
-  const onAcidApi = async () => {
-    fetch('/api/emailtester')
-      .then(res => res.text())
-      .then(data => console.log(data))
   }
 
   return (      
