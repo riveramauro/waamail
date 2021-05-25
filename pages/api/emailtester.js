@@ -1,15 +1,13 @@
 const axios = require('axios');
 const token = process.env.EMAILONACID_API_KEY;
-
-const url = 'https://api.emailonacid.com/v5/email/tests';
-const testing = true;
-const clients = {"clients": ["gmailw10_ff21_win"]}
+const testing = process.env.TESTING;
 
 let email = {
-  "subject": "My Email Subject",
-  "html": "<h1>This is a test</h1>",
-  "charset": "utf-8",
-  "free_test":  (testing ? true : false)
+  subject: "My Email Subject",
+  html: "<h1>This is a test</h1>",
+  charset: "utf-8",
+  free_test:  (testing ? true : false),
+  clients: ["gmailw10_ff21_win"]
 }
 const options = {
   headers: {
@@ -19,34 +17,54 @@ const options = {
   }
 }
 
+const testAuth = async () => {
+  try {
+    const response = await axios.get('https://api.emailonacid.com/v5/auth', options)
+    return response.data;
+  } catch (error) {
+    return error.response.data
+  }
+}
+
 const getClients = async () => {
   let response;
   try {
-    response = await axios.get('https://api.emailonacid.com/v5/email/clients/default', options)
-    return response.data  
+    response = await axios.get(
+      'https://api.emailonacid.com/v5/email/clients/default', options)
+    return response.data.clients  
   } catch (error) {
     console.log(`getClient error: ${error}`); 
   }
 }
 
+const sendTestEmail = async (emailData) => {
+  let response;
+  try {
+    response = await axios.post(
+      'https://api.emailonacid.com/v5/email/tests', emailData, options);
+    return response.data;
+  } catch (error) {
+    console.log(`sendTest eror: ${error}`);
+  }
+}
+
 export default async (req, res) => {
 
-  let defaultClients;
-  let emailTest;
-
-  const requestBody = JSON.parse(req.body)
-  
-  email = {...email,
-    html: JSON.parse(requestBody.email),
-    subject: requestBody.subject
+  const auth = await testAuth();
+  if (auth.error) {
+    console.log('Authorization error');
+    return res.status(400).send(auth)
   }
 
+  let emailTest;
+  const requestBody = JSON.parse(req.body)
+  let emailData = {...email,
+    html: JSON.parse(requestBody.email),
+    subject: requestBody.subject,
+    clients: (testing ? email.clients : await getClients())
+  }
   try {
-    
-    defaultClients = (testing ? clients : await getClients())
-    email  = {...email, ...defaultClients}
-    
-    emailTest = await axios.post(url, email, options)
+    emailTest = await sendTestEmail(emailData)
     console.log('success:', emailTest);
     return res.status(200).json(JSON.stringify(emailTest.data))
   } catch (error) {
