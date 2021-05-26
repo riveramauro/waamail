@@ -8,22 +8,6 @@ export default function Home() {
 
   const [code, setCode] = useState(null)
 
-  const sendMail = (file) => {
-    
-    fetch('/api/hello', {
-      method: 'POST',
-      body: file
-    })
-      .then(res => res.json())
-      .then(data => console.log(data))
-      .catch(res => console.log(res))
-  }
-
-  const handleChange = (event) => {
-    event.preventDefault();
-    console.log(event);
-  }
-
   const myTheme = {
     global: {
       font: {
